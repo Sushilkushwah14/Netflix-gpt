@@ -1,8 +1,11 @@
 # Netflix-Gpt
 -create react app netflix gpt
 -Configure tailwind css
+-Routing of out app
 -Header 
 -Login form
+-form validation 
+-useRef hook
 
 # Features
 
