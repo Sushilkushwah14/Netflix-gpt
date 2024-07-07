@@ -6,6 +6,14 @@
 -Login form
 -form validation 
 -useRef hook
+-Firebase setup
+-Deploying our app to production
+-create signUp User account 
+-Implement Sign In user Api
+-created Redux store with userSlice
+-implemented sign out 
+-update profile 
+-fetch from TMDB Movies
 
 # Features
 

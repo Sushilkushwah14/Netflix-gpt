@@ -1,12 +1,20 @@
 import React ,{ useRef, useState } from 'react'
 import Header from './Header'
 import { checkvalidadata } from '../utils/validate'
+import {  createUserWithEmailAndPassword,signInWithEmailAndPassword, updateProfile } from "firebase/auth"
+import {auth } from "../utils/firebase"
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { addUser } from '../utils/userSlice'
 
 
 const Login = () => {
 
   const [isSignInForm,setisSignInForm]=useState(true)
   const [errormessage,seterrormessage]=useState(null)
+  const navigate=useNavigate
+  const dispatch=useDispatch()
+  
   const toggleSignInForm=()=>{
    setisSignInForm(!isSignInForm)
   }
@@ -25,6 +33,69 @@ const Login = () => {
   // console.log(message);
   seterrormessage(message)
   
+  if(message) return; //message means any error message
+  
+  //SignIn and SignUp logic
+
+  if(!isSignInForm){
+ //not signin so we write signup logic
+ createUserWithEmailAndPassword(
+  auth,
+   email.current.value,
+   password.current.value,
+   name.current.value,
+  )
+  .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+    updateProfile(user, {
+      displayName:name.current.value,
+     photoURL: "https://picsum.photos/id/237/200/300"
+    })
+    .then(() => {
+      // Profile updated!
+      const{ uid,email ,displayName,photoURL} = auth.currentUser;
+      dispatch(
+        addUser({
+          uid:uid,
+          email:email ,
+          display:displayName,
+          photoURL:photoURL
+        })
+      )
+      navigate("/browse")
+    })
+    .catch((error) => {
+      // An error occurred while updating
+      seterrormessage(error.message)
+    });
+   console.log(user)
+  
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+   seterrormessage(errorCode+"-"+errorMessage)
+  });
+  }
+
+
+  else{
+ //  we write sigin logic
+ signInWithEmailAndPassword(auth, email.current.value,password.current.value,name.current.value)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+console.log(user);
+navigate("/")
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    seterrormessage(errorCode+"-"+errorMessage)
+  });
+  }
+
   }
  
 
@@ -64,7 +135,10 @@ const Login = () => {
       className='p-2 my-4 w-full bg-gray-600 rounded-xl'
 
       /> */}
-      <p className='text-red-600 font-bold text-lg p-2'> {errormessage}</p>
+      <p
+       className='text-red-600 font-bold text-lg p-2'>
+       {errormessage}
+      </p>
       <button
        className='p-4 my-4 bg-red-700 w-full rounded-xl
         bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500'
