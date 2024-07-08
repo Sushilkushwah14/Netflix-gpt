@@ -30,7 +30,7 @@ const Header = () => {
         alt='netflix-logo'
       />
       { user && (<div className='flex p-2'>
-        <img className='w-12 h-12 rounded-xl' src={user.photoURL }  alt='usericon'/>
+        <img className='w-12 h-12 rounded-xl' src={user?.photoURL }  alt='usericon'/>
         <button onClick={handleSignOut} className='font-bold text-white '>(Sign Out)</button>
       </div>)}
     

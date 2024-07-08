@@ -12,7 +12,7 @@ const Login = () => {
 
   const [isSignInForm,setisSignInForm]=useState(true)
   const [errormessage,seterrormessage]=useState(null)
-  const navigate=useNavigate
+  const navigate=useNavigate()
   const dispatch=useDispatch()
   
   const toggleSignInForm=()=>{
@@ -48,14 +48,16 @@ const Login = () => {
   .then((userCredential) => {
     // Signed up 
     const user = userCredential.user;
+    console.log(user);
+
     updateProfile(user, {
       displayName:name.current.value,
      photoURL: "https://picsum.photos/id/237/200/300"
     })
     .then(() => {
-      // Profile updated!
+ // Profile updated! Again updating our store after photourl and name
       const{ uid,email ,displayName,photoURL} = auth.currentUser;
-      dispatch(
+      dispatch(                        //auth.currentUser ko samajhna hai????
         addUser({
           uid:uid,
           email:email ,
@@ -87,7 +89,7 @@ const Login = () => {
     // Signed in 
     const user = userCredential.user;
 console.log(user);
-navigate("/")
+navigate("/browse")
   })
   .catch((error) => {
     const errorCode = error.code;
