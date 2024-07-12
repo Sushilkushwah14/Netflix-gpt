@@ -3,16 +3,16 @@ import Header from './Header'
 import { checkvalidadata } from '../utils/validate'
 import {  createUserWithEmailAndPassword,signInWithEmailAndPassword, updateProfile } from "firebase/auth"
 import {auth } from "../utils/firebase"
-import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addUser } from '../utils/userSlice'
+import { USER_AVATAR } from '../utils/constant'
 
 
 const Login = () => {
 
   const [isSignInForm,setisSignInForm]=useState(true)
   const [errormessage,seterrormessage]=useState(null)
-  const navigate=useNavigate()
+
   const dispatch=useDispatch()
   
   const toggleSignInForm=()=>{
@@ -52,7 +52,7 @@ const Login = () => {
 
     updateProfile(user, {
       displayName:name.current.value,
-     photoURL: "https://picsum.photos/id/237/200/300"
+     photoURL:USER_AVATAR
     })
     .then(() => {
  // Profile updated! Again updating our store after photourl and name
@@ -62,10 +62,10 @@ const Login = () => {
           uid:uid,
           email:email ,
           display:displayName,
-          photoURL:photoURL
+          photoURL:photoURL,
         })
       )
-      navigate("/browse")
+    
     })
     .catch((error) => {
       // An error occurred while updating
@@ -89,8 +89,30 @@ const Login = () => {
     // Signed in 
     const user = userCredential.user;
 console.log(user);
-navigate("/browse")
-  })
+  
+updateProfile(user, {
+  displayName:name.current.value,
+ photoURL:USER_AVATAR
+})
+.then(() => {
+// Profile updated! Again updating our store after photourl and name
+  const{ uid,email ,displayName,photoURL} = auth.currentUser;
+  dispatch(                        //auth.currentUser ko samajhna hai????
+    addUser({
+      uid:uid,
+      email:email ,
+      display:displayName,
+      photoURL:photoURL,
+    })
+  )
+
+})
+.catch((error) => {
+  // An error occurred while updating
+  seterrormessage(error.message)
+});
+
+})
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
