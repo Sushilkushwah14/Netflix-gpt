@@ -26,7 +26,8 @@
 -Fetch Data fot trailer video
 -Update Store with Trailer Video
 -embeded a yt video and make it mute&autoplay
-
+-Tailwind classes to make mainContainer look awesome 
+-Build Secondary container
 
 # Features
 
