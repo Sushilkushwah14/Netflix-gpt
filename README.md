@@ -28,6 +28,17 @@
 -embeded a yt video and make it mute&autoplay
 -Tailwind classes to make mainContainer look awesome 
 -Build Secondary container
+-Build movie categories 
+-movie cards-
+-tmdb image cdn url
+-usepopularMovies hook
+-useupcommingMovies hook
+-GPT search page
+-GPT search bar
+-(BONUS) Multi-langauge feature in GPT search bar
+
+
+
 
 # Features
 
